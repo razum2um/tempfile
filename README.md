@@ -21,7 +21,7 @@ can read them only from filesystem.
     ;; uses a tempfile for some scope and
     ;; deletes it immediately afterwards
     (with-tempfile [t (tempfile text)]
-        (pprint (.exists t))) ;; "true"
+      (pprint (.exists t))) ;; "true"
 
 ## License
 
