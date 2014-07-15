@@ -1,4 +1,4 @@
-(defproject tempfile "0.1.0-SNAPSHOT"
+(defproject tempfile "0.1.0"
   :description "Provides a natural way to handle temponary files in Clojure"
   :url "http://github.com/razum2um/tempfile"
   :license {:name "Eclipse Public License"
