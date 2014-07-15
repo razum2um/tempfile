@@ -18,17 +18,10 @@ can read them only from filesystem.
     ;; writes stringified args to tempfile and returns java.io.File
     (tempfile "some" text)
 
-    ;; uses a tempfile for some content and delete it immediately
+    ;; uses a tempfile for some scope and
+    ;; deletes it immediately afterwards
     (with-tempfile [t (tempfile text)]
-
-      ;; remember to do what you need in 'let' block!
-      (let [exists  (.exists t)
-            fname   (.getAbsolutePath t)
-            content (clojure.java.shell/sh "cat" fname)]
-        (pprint exists)                                   ;; "true"
-        (pprint (:out content)))                          ;; "some string"
-
-      (pprint (.exists t)))                               ;; "false"
+        (pprint (.exists t))) ;; "true"
 
 ## License
 

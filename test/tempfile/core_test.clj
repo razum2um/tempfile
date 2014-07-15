@@ -20,3 +20,7 @@
   ;; executed after `finally` deletion!
   (expect false (.exists t)))
 
+(def tempname (atom ""))
+(with-tempfile [t (tempfile text)]
+  (reset! tempname (.getAbsolutePath t)))
+(expect #"No such file or directory" (:err (sh "cat" @tempname)))
