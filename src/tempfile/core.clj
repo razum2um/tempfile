@@ -1,11 +1,22 @@
 (ns tempfile.core
   (:require [clojure.java.io :as io])
-  (:import (java.io File)))
+  (:import [java.io File]
+           [java.nio.file Files]
+           [java.nio.file.attribute FileAttribute]
+           [org.apache.commons.io FileUtils]))
 
 (defn- get-tempfile
   []
-  (let [fd (File/createTempFile (str (rand-int 100000)) nil)]
+  (let [fd (File/createTempFile (str (System/nanoTime)) nil)]
     (.deleteOnExit fd)
+    fd))
+
+(defn tempdir
+  "Creates tempdir and returns java.io.File"
+  []
+  (let [unix-path (Files/createTempDirectory (str (System/nanoTime)) (into-array FileAttribute []))
+        fd (.toFile unix-path)]
+    (FileUtils/forceDeleteOnExit fd)
     fd))
 
 (defn tempfile
@@ -26,7 +37,7 @@
                               (try
                                 (with-tempfile ~(subvec bindings 2) ~@body)
                                 (finally
-                                  (. ~(bindings 0) delete))))
+                                  (FileUtils/forceDelete ~(bindings 0)))))
     :else (throw (IllegalArgumentException.
                    "with-tempfile only allows Symbols in bindings"))))
 
